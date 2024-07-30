@@ -1,4 +1,5 @@
 import 'package:chat_app/features/auth/presentation/widgets/input_field.dart';
+import 'package:chat_app/global/widgets/confirm_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -51,6 +52,39 @@ class LoginOrRegisterPage extends StatelessWidget {
                     prefixIcon: Icons.lock,
                     suffixIcon: Icons.remove_red_eye_outlined,
                     obscureText: true,
+                  ),
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text('Forgot password?', style: GoogleFonts.quicksand(fontSize: 15, color: Colors.grey[400]), textAlign: TextAlign.end),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+                  ConfirmButton(text: 'LOGIN', onPressed: () {}),
+                  const SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // line
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      // or
+                      Text('or', style: GoogleFonts.quicksand(fontSize: 15, color: Colors.white)),
+                      const SizedBox(width: 10),
+                      // line
+                      Expanded(
+                        child: Container(
+                          height: 1,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
