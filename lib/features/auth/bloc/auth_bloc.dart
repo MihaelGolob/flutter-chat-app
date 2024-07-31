@@ -15,10 +15,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogout>((event, emit) => _onAuthLogout(event, emit));
   }
 
-  void _onAuthLogin(AuthLogin event, Emitter<AuthState> emit) {
+  void _onAuthLogin(AuthLogin event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
-      _authRepository.signInWithEmailAndPassword(event.email, event.password);
+      await _authRepository.signInWithEmailAndPassword(event.email, event.password);
       emit(AuthSuccess(User(id: '0', username: event.email, email: event.email)));
     } catch (e) {
       emit(AuthError('Failed to sign in'));
@@ -29,10 +29,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // todo
   }
 
-  void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) {
+  void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
-      _authRepository.signOut();
+      await _authRepository.signOut();
       emit(AuthInitial());
     } catch (e) {
       emit(AuthError('Failed to sign out'));

@@ -12,7 +12,7 @@ class AuthRepositoryFirebase implements AuthRepository {
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       print(e);
       rethrow;
     }
@@ -22,7 +22,7 @@ class AuthRepositoryFirebase implements AuthRepository {
   Future<void> signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       print(e);
       rethrow;
     }
