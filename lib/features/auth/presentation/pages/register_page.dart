@@ -67,7 +67,7 @@ class RegisterPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     const SizedBox(height: 25),
-                    ConfirmButton(text: 'REGISTER', onPressed: () {}),
+                    ConfirmButton(text: 'REGISTER', onTap: () {}),
                     const SizedBox(height: 20),
                     const Spacer(),
                     GestureDetector(

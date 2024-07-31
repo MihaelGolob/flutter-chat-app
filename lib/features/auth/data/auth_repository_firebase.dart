@@ -1,4 +1,5 @@
 import 'package:chat_app/features/auth/data/auth_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepositoryFirebase implements AuthRepository {
   @override
@@ -8,9 +9,13 @@ class AuthRepositoryFirebase implements AuthRepository {
   }
 
   @override
-  Future<void> signInWithEmailAndPassword(String email, String password) {
-    // TODO: implement signInWithEmailAndPassword
-    throw UnimplementedError();
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
 
   @override
@@ -18,5 +23,4 @@ class AuthRepositoryFirebase implements AuthRepository {
     // TODO: implement signOut
     throw UnimplementedError();
   }
-
 }
