@@ -19,11 +19,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(AuthLoading());
       _authRepository.signInWithEmailAndPassword(event.email, event.password);
+      emit(AuthSuccess(User(id: '0', username: event.email, email: event.email)));
     } catch (e) {
       emit(AuthError('Failed to sign in'));
     }
-
-    emit(AuthSuccess(User(id: '0', username: event.email, email: event.email)));
   }
 
   void _onAuthRegister(AuthRegister event, Emitter<AuthState> emit) {
@@ -34,10 +33,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(AuthLoading());
       _authRepository.signOut();
+      emit(AuthInitial());
     } catch (e) {
       emit(AuthError('Failed to sign out'));
     }
-
-    emit(AuthInitial());
   }
 }
