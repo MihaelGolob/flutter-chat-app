@@ -25,8 +25,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onAuthRegister(AuthRegister event, Emitter<AuthState> emit) {
-    // todo
+  void _onAuthRegister(AuthRegister event, Emitter<AuthState> emit) async {
+    if (event.password != event.confirmPassword) {
+      emit(AuthError('Passwords do not match'));
+      return;
+    }
+
+    try {
+      emit(AuthLoading());
+      await _authRepository.registerWithEmailAndPassword(event.email, event.password);
+      emit(AuthInitial());
+    } catch (e) {
+      emit(AuthError('Failed to sign up'));
+    }
   }
 
   void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) async {
