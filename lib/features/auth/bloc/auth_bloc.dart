@@ -31,6 +31,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) {
-    // todo
+    try {
+      emit(AuthLoading());
+      _authRepository.signOut();
+    } catch (e) {
+      emit(AuthError('Failed to sign out'));
+    }
+
+    emit(AuthInitial());
   }
 }
