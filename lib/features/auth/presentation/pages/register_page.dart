@@ -32,7 +32,7 @@ class RegisterPage extends StatelessWidget {
               if (state is AuthInitial) {
                 Navigator.of(context).pushReplacementNamed('/');
               } else if (state is AuthError) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message ?? '')));
               }
             },
             builder: (context, state) {

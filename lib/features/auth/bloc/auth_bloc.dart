@@ -1,5 +1,6 @@
 import 'package:chat_app/features/auth/data/auth_repository.dart';
 import 'package:chat_app/features/auth/models/user_model.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,13 +22,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authRepository.signInWithEmailAndPassword(event.email, event.password);
       emit(AuthSuccess(User(id: '0', username: event.email, email: event.email)));
     } catch (e) {
-      emit(AuthError('Failed to sign in'));
+      emit(AuthError(message: 'Failed to sign in'));
     }
   }
 
   void _onAuthRegister(AuthRegister event, Emitter<AuthState> emit) async {
     if (event.password != event.confirmPassword) {
-      emit(AuthError('Passwords do not match'));
+      emit(AuthError(message: 'Passwords do not match'));
       return;
     }
 
@@ -36,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authRepository.registerWithEmailAndPassword(event.email, event.password);
       emit(AuthInitial());
     } catch (e) {
-      emit(AuthError('Failed to sign up'));
+      emit(AuthError(message: 'Failed to sign up'));
     }
   }
 
@@ -46,7 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authRepository.signOut();
       emit(AuthInitial());
     } catch (e) {
-      emit(AuthError('Failed to sign out'));
+      emit(AuthError(message: 'Failed to sign out'));
     }
   }
 }

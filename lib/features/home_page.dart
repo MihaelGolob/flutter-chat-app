@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
             BlocListener<AuthBloc, AuthState>(
               listener: (context, state) {
                 if (state is AuthError) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message ?? '')));
                 } else if (state is AuthInitial) {
                   Navigator.of(context).pushReplacementNamed('/');
                 }
