@@ -1,4 +1,6 @@
 import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/features/auth/presentation/widgets/input_field.dart';
+import 'package:chat_app/features/chat/presentation/widgets/contact_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,9 +33,9 @@ class HomePage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             title: Text(
               state.user.email,
-              style: GoogleFonts.quicksand(color: Colors.white, fontWeight: FontWeight.bold),
+              style: GoogleFonts.quicksand(color: Colors.white),
             ),
-            titleSpacing: 5,
+            titleSpacing: 20,
             actions: [
               IconButton(
                 onPressed: () => context.read<AuthBloc>().add(AuthLogout()),
@@ -43,7 +45,49 @@ class HomePage extends StatelessWidget {
           ),
           body: SafeArea(
             child: Column(
-              children: [Text('neki')],
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Write to your colleagues',
+                          style: GoogleFonts.quicksand(
+                            color: Colors.white,
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            height: 1.1,
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          height: 80,
+                          child: InputField(
+                            controller: TextEditingController(),
+                            hintText: 'Search',
+                            prefixIcon: Icons.search_outlined,
+                            suffixIcon: Icons.arrow_right_alt_rounded,
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
+                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
+                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
+                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
+                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         );

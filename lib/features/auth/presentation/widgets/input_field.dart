@@ -21,15 +21,15 @@ class InputField extends StatelessWidget {
         prefixIcon: Icon(prefixIcon, color: Colors.white),
         suffixIcon: Icon(suffixIcon, color: Colors.white),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Colors.white),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Colors.white),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Color.fromRGBO(1, 189, 173, 1)),
         ),
       ),
