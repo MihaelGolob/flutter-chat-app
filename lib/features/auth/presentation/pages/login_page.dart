@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
               }
             },
             builder: (blocContext, state) {
-              if (state is AuthLoading) {
+              if (state is AuthLoading || state is AuthSuccess) {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 return _displayLoginPage(context);
