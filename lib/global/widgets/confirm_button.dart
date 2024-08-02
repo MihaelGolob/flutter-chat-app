@@ -15,7 +15,7 @@ class ConfirmButton extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 33, 124, 124),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
         ),
         child: Center(child: Text(text, style: GoogleFonts.quicksand(fontSize: 20, color: Colors.white))),
       ),

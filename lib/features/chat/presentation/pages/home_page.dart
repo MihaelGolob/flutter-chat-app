@@ -1,5 +1,7 @@
 import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:chat_app/features/auth/presentation/widgets/input_field.dart';
+import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:chat_app/features/chat/presentation/widgets/contact_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tempUser = User(email: 'ann.smith@gmail.com', username: 'Ann Smith', id: '0');
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -79,11 +83,26 @@ class HomePage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     children: [
-                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
-                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
-                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
-                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
-                      ContactPreview(name: 'Ann Smith', lastMessage: 'Thank you, this is approved', lastMessageTime: '13:42',),
+                      ContactPreview(
+                        user: tempUser,
+                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
+                      ),
+                      ContactPreview(
+                        user: tempUser,
+                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
+                      ),
+                      ContactPreview(
+                        user: tempUser,
+                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
+                      ),
+                      ContactPreview(
+                        user: tempUser,
+                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
+                      ),
+                      ContactPreview(
+                        user: tempUser,
+                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
+                      ),
                     ],
                   ),
                 ),
