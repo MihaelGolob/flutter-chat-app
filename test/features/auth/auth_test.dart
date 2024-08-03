@@ -13,9 +13,9 @@ class AuthRepositoryMock extends AuthRepository {
   }
 
   @override
-  Future<void> signInWithEmailAndPassword(String email, String password) {
+  Future<String> signInWithEmailAndPassword(String email, String password) {
     if (email == 'test@test.com' && password == 'test123') {
-      return Future.value();
+      return Future.value('0');
     } else {
       throw Exception('Invalid credentials');
     }
@@ -24,11 +24,6 @@ class AuthRepositoryMock extends AuthRepository {
   @override
   Future<void> signOut() {
     throw UnimplementedError();
-  }
-
-  @override
-  String getUserId() {
-    return 'absdf-21fds';
   }
 }
 

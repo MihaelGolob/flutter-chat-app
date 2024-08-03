@@ -13,9 +13,10 @@ class AuthRepositoryFirebase implements AuthRepository {
   }
 
   @override
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(String email, String password) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      return FirebaseAuth.instance.currentUser?.uid ?? '';
     } on FirebaseAuthException catch (e) {
       print(e);
       rethrow;
@@ -30,10 +31,5 @@ class AuthRepositoryFirebase implements AuthRepository {
       print(e);
       rethrow;
     }
-  }
-
-  @override
-  String getUserId() {
-    return FirebaseAuth.instance.currentUser?.uid ?? '';
   }
 }

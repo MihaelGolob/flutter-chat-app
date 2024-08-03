@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
               if (state is ChatLoading || !snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is ChatError) {
-                return Center(child: Text(state.message));
+                return Center(child: Text(state.message, textAlign: TextAlign.center));
               }
 
               final contacts = snapshot.data as List<User>;

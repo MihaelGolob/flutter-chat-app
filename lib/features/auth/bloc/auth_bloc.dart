@@ -21,9 +21,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onAuthLogin(AuthLogin event, Emitter<AuthState> emit) async {
     try {
       emit(AuthLoading());
-      await _authRepository.signInWithEmailAndPassword(event.email, event.password);
-      _userRepository.setUser(User(id: _authRepository.getUserId(), username: event.email, email: event.email));
-      _userRepository.addUserToServer(_userRepository.getUser()!);
+      final userId = await _authRepository.signInWithEmailAndPassword(event.email, event.password);
+      final newUser = User(id: userId, username: event.email, email: event.email);
+      _userRepository.setUser(newUser);
+      _userRepository.addUserToServer(newUser);
       emit(AuthSuccess(_userRepository.getUser()!));
     } catch (e) {
       emit(AuthError(message: 'Failed to sign in'));
