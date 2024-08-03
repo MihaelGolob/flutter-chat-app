@@ -31,4 +31,9 @@ class AuthRepositoryFirebase implements AuthRepository {
       rethrow;
     }
   }
+
+  @override
+  String getUserId() {
+    return FirebaseAuth.instance.currentUser?.uid ?? '';
+  }
 }

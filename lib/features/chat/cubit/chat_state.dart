@@ -8,5 +8,12 @@ sealed class ChatState extends Equatable {
 }
 
 final class ChatEmpty extends ChatState {}
-
 final class ChatLoading extends ChatState {}
+final class ChatError extends ChatState {
+  final String message;
+
+  const ChatError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

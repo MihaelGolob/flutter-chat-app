@@ -9,6 +9,14 @@ class Message {
     required this.timestamp,
   });
 
+  factory Message.empty() {
+    return Message(
+      message: '',
+      senderId: '',
+      timestamp: DateTime.now(),
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'message': message,

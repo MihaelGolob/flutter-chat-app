@@ -1,19 +1,31 @@
 import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:chat_app/features/auth/presentation/widgets/input_field.dart';
+import 'package:chat_app/features/chat/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
 import 'package:chat_app/features/chat/presentation/widgets/contact_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final tempUser = User(email: 'ann.smith@gmail.com', username: 'Ann Smith', id: '0');
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  late Future<List<User>> _allUsersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _allUsersFuture = context.read<ChatCubit>().getAllUsers();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -79,31 +91,33 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    children: [
-                      ContactPreview(
-                        user: tempUser,
-                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: BlocBuilder<ChatCubit, ChatState>(
+                      builder: (context, state) => FutureBuilder(
+                        future: _allUsersFuture,
+                        builder: (context, snapshot) {
+                          if (state is ChatLoading || !snapshot.hasData) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (state is ChatError) {
+                            return Center(child: Text(state.message));
+                          }
+
+                          final contacts = snapshot.data as List<User>;
+                          return ListView.builder(
+                            itemCount: contacts.length,
+                            itemBuilder: (context, index) => ContactPreview(
+                              user: contacts[index],
+                              goToChat: () {
+                                final data = ChatPageData(user: contacts[index]);
+                                Navigator.pushNamed(context, '/chat', arguments: data);
+                              },
+                            ),
+                          );
+                        },
                       ),
-                      ContactPreview(
-                        user: tempUser,
-                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
-                      ),
-                      ContactPreview(
-                        user: tempUser,
-                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
-                      ),
-                      ContactPreview(
-                        user: tempUser,
-                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
-                      ),
-                      ContactPreview(
-                        user: tempUser,
-                        goToChat: () => Navigator.pushNamed(context, '/chat', arguments: ChatPageData(user: tempUser)),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],

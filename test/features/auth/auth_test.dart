@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/features/auth/data/auth_repository.dart';
+import 'package:chat_app/features/auth/data/user_repository_firebase.dart';
 import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -24,6 +25,11 @@ class AuthRepositoryMock extends AuthRepository {
   Future<void> signOut() {
     throw UnimplementedError();
   }
+
+  @override
+  String getUserId() {
+    return 'absdf-21fds';
+  }
 }
 
 void main() {
@@ -32,7 +38,7 @@ void main() {
       late AuthBloc authBloc;
 
       setUp(() async {
-        authBloc = AuthBloc(AuthRepositoryMock());
+        authBloc = AuthBloc(AuthRepositoryMock(), UserRepositoryFirebase());
       });
 
       test('Initial state should be AuthInitial', () {

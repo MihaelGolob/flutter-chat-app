@@ -8,23 +8,22 @@ class ChatRepositoryFirebase extends ChatRepository {
 
   final String _kChatCollection = 'chat';
   final String _kUsersCollection = 'users';
+  final String _kMessagesCollection = 'messages';
 
   ChatRepositoryFirebase() {
     _db = FirebaseFirestore.instance;
+    print('Firebase firestore is initialized');
   }
 
   @override
-  Future<List<Message>> getAllMessagesForUser(User me, User user) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> addNewUser(User user) async {
-    try {
-      _db.collection(_kUsersCollection).doc(user.email).set(user.toMap());
-    } catch (e) {
-      print('Error when adding new user: $e');
-    }
+  Stream<Message> getAllMessagesForUser(User me, User user) {
+    return _db
+        .collection(_kChatCollection)
+        .doc(_getChatId(me, user))
+        .collection(_kMessagesCollection)
+        .orderBy('timestamp', descending: false)
+        .snapshots()
+        .map((QuerySnapshot snapshot) => Message.fromMap(snapshot.docs.first.data() as Map<String, dynamic>));
   }
 
   @override
@@ -42,7 +41,7 @@ class ChatRepositoryFirebase extends ChatRepository {
   @override
   Future<Message> getLastMessageForUser(User me, User user) {
     try {
-      return _db.collection(_kChatCollection).doc(_getChatId(me, user)).collection('messages').get().then((QuerySnapshot snapshot) {
+      return _db.collection(_kChatCollection).doc(_getChatId(me, user)).collection(_kMessagesCollection).get().then((QuerySnapshot snapshot) {
         return Message.fromMap(snapshot.docs.first.data() as Map<String, dynamic>);
       });
     } catch (e) {
@@ -57,7 +56,7 @@ class ChatRepositoryFirebase extends ChatRepository {
       await _db
           .collection(_kChatCollection)
           .doc(_getChatId(me, user))
-          .collection('messages')
+          .collection(_kMessagesCollection)
           .add(message.toMap())
           .then((DocumentReference doc) => print('Message sent ${message.message}'));
     } catch (e) {
@@ -66,7 +65,7 @@ class ChatRepositoryFirebase extends ChatRepository {
   }
 
   String _getChatId(User me, User user) {
-    final users = [me.email, user.email]..sort();
+    final users = [me.id, user.id]..sort();
     return users.join('_');
   }
 }

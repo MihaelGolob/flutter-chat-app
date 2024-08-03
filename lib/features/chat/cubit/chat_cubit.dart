@@ -1,3 +1,4 @@
+import 'package:chat_app/features/auth/data/user_repository.dart';
 import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:chat_app/features/chat/data/chat_repository.dart';
 import 'package:chat_app/features/chat/models/message_model.dart';
@@ -8,47 +9,60 @@ part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final ChatRepository _chatRepository;
-  late User? _me;
+  final UserRepository _userRepository;
 
-  ChatCubit(this._chatRepository) : super(ChatEmpty());
-
-  void setCurrentUser(User user) {
-    _me = user;
-  }
+  ChatCubit(this._chatRepository, this._userRepository) : super(ChatEmpty());
 
   Future<List<User>> getAllUsers() async {
-    emit(ChatLoading());
-    var users = await _chatRepository.getAllUsers();
-    emit(ChatEmpty());
-
-    return users;
+    try {
+      emit(ChatLoading());
+      var users = await _chatRepository.getAllUsers();
+      emit(ChatEmpty());
+      return users;
+    } catch (e) {
+      emit(ChatError(e.toString()));
+      return [];
+    }
   }
 
-  Future<List<Message>> getAllMessagesForUser(User user) async {
-    if (_me == null) throw Exception('User not set');
+  Stream<Message> getAllMessagesForUser(User user) {
+    final me = _userRepository.getUser();
+    if (me == null) throw Exception('User not set');
 
-    emit(ChatLoading());
-    var messages = await _chatRepository.getAllMessagesForUser(_me!, user);
-    emit(ChatEmpty());
-
-    return messages;
+    try {
+      return _chatRepository.getAllMessagesForUser(me, user);
+    } catch (e) {
+      emit(ChatError(e.toString()));
+      return const Stream.empty();
+    }
   }
 
   Future<Message> getLastMessageForUser(User user) async {
-    if (_me == null) throw Exception('User not set');
+    final me = _userRepository.getUser();
+    if (me == null) throw Exception('User not set');
 
-    emit(ChatLoading());
-    var message = await _chatRepository.getLastMessageForUser(_me!, user);
-    emit(ChatEmpty());
+    try {
+      emit(ChatLoading());
+      var message = await _chatRepository.getLastMessageForUser(me, user);
+      emit(ChatEmpty());
 
-    return message;
+      return message;
+    } catch (e) {
+      emit(ChatError(e.toString()));
+      return Message.empty();
+    }
   }
 
   Future<void> sendMessage(User user, Message message) async {
-    if (_me == null) throw Exception('User not set');
+    final me = _userRepository.getUser();
+    if (me == null) throw Exception('User not set');
 
-    emit(ChatLoading());
-    await _chatRepository.sendMessage(_me!, user, message);
-    emit(ChatEmpty());
+    try {
+      emit(ChatLoading());
+      await _chatRepository.sendMessage(me, user, message);
+      emit(ChatEmpty());
+    } catch (e) {
+      emit(ChatError(e.toString()));
+    }
   }
 }

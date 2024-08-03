@@ -1,4 +1,5 @@
 import 'package:chat_app/features/auth/data/auth_repository.dart';
+import 'package:chat_app/features/auth/data/user_repository.dart';
 import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -9,8 +10,9 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
+  final UserRepository _userRepository;
 
-  AuthBloc(this._authRepository) : super(AuthInitial()) {
+  AuthBloc(this._authRepository, this._userRepository) : super(AuthInitial()) {
     on<AuthLogin>((event, emit) => _onAuthLogin(event, emit));
     on<AuthRegister>((event, emit) => _onAuthRegister(event, emit));
     on<AuthLogout>((event, emit) => _onAuthLogout(event, emit));
@@ -20,7 +22,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(AuthLoading());
       await _authRepository.signInWithEmailAndPassword(event.email, event.password);
-      emit(AuthSuccess(User(id: '0', username: event.email, email: event.email)));
+      _userRepository.setUser(User(id: _authRepository.getUserId(), username: event.email, email: event.email));
+      _userRepository.addUserToServer(_userRepository.getUser()!);
+      emit(AuthSuccess(_userRepository.getUser()!));
     } catch (e) {
       emit(AuthError(message: 'Failed to sign in'));
     }
@@ -45,6 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(AuthLoading());
       await _authRepository.signOut();
+      _userRepository.clearUser();
       emit(AuthInitial());
     } catch (e) {
       emit(AuthError(message: 'Failed to sign out'));
