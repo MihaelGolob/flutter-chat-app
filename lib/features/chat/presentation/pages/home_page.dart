@@ -62,69 +62,77 @@ class _HomePageState extends State<HomePage> {
           body: SafeArea(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Write to your colleagues',
-                          style: GoogleFonts.quicksand(
-                            color: Colors.white,
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                            height: 1.1,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        SizedBox(
-                          height: 80,
-                          child: InputField(
-                            controller: TextEditingController(),
-                            hintText: 'Search',
-                            prefixIcon: Icons.search_outlined,
-                            suffixIcon: Icons.arrow_right_alt_rounded,
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: BlocBuilder<ChatCubit, ChatState>(
-                      builder: (context, state) => FutureBuilder(
-                        future: _allUsersFuture,
-                        builder: (context, snapshot) {
-                          if (state is ChatLoading || !snapshot.hasData) {
-                            return const Center(child: CircularProgressIndicator());
-                          } else if (state is ChatError) {
-                            return Center(child: Text(state.message));
-                          }
-
-                          final contacts = snapshot.data as List<User>;
-                          return ListView.builder(
-                            itemCount: contacts.length,
-                            itemBuilder: (context, index) => ContactPreview(
-                              user: contacts[index],
-                              goToChat: () {
-                                final data = ChatPageData(user: contacts[index]);
-                                Navigator.pushNamed(context, '/chat', arguments: data);
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
+                _buildHeader(),
+                _buildContactList(),
               ],
             ),
           ),
         );
       }),
+    );
+  }
+
+  _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Center(
+        child: Column(
+          children: [
+            Text(
+              'Write to your colleagues',
+              style: GoogleFonts.quicksand(
+                color: Colors.white,
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+                height: 1.1,
+              ),
+            ),
+            const SizedBox(height: 25),
+            SizedBox(
+              height: 80,
+              child: InputField(
+                controller: TextEditingController(),
+                hintText: 'Search',
+                prefixIcon: Icons.search_outlined,
+                suffixIcon: Icons.arrow_right_alt_rounded,
+              ),
+            ),
+            const SizedBox(height: 25),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildContactList() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: BlocBuilder<ChatCubit, ChatState>(
+          builder: (context, state) => FutureBuilder(
+            future: _allUsersFuture,
+            builder: (context, snapshot) {
+              if (state is ChatLoading || !snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is ChatError) {
+                return Center(child: Text(state.message));
+              }
+
+              final contacts = snapshot.data as List<User>;
+              return ListView.builder(
+                itemCount: contacts.length,
+                itemBuilder: (context, index) => ContactPreview(
+                  user: contacts[index],
+                  goToChat: () {
+                    final data = ChatPageData(user: contacts[index]);
+                    Navigator.pushNamed(context, '/chat', arguments: data);
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

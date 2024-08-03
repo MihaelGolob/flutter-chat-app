@@ -28,24 +28,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AuthRepository>(
-          create: (context) => AuthRepositoryFirebase(),
-        ),
-        RepositoryProvider<ChatRepository>(
-          create: (context) => ChatRepositoryFirebase(),
-        ),
-        RepositoryProvider<UserRepository>(
-          create: (context) => UserRepositoryFirebase(),
-        ),
+        RepositoryProvider<AuthRepository>(create: (context) => AuthRepositoryFirebase()),
+        RepositoryProvider<ChatRepository>(create: (context) => ChatRepositoryFirebase()),
+        RepositoryProvider<UserRepository>(create: (context) => UserRepositoryFirebase()),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthBloc>(
-            create: (context) => AuthBloc(context.read<AuthRepository>(), context.read<UserRepository>()),
-          ),
-          BlocProvider<ChatCubit>(
-            create: (context) => ChatCubit(context.read<ChatRepository>(), context.read<UserRepository>()),
-          ),
+          BlocProvider<AuthBloc>(create: (context) => AuthBloc(context.read<AuthRepository>(), context.read<UserRepository>())),
+          BlocProvider<ChatCubit>(create: (context) => ChatCubit(context.read<ChatRepository>(), context.read<UserRepository>())),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
