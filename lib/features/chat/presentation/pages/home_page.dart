@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) => ContactPreview(
                   user: contacts[index],
                   goToChat: () {
-                    final data = ChatPageData(user: contacts[index]);
+                    final data = ChatPageData(receiver: contacts[index]);
                     Navigator.pushNamed(context, '/chat', arguments: data);
                   },
                 ),

@@ -25,7 +25,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Stream<Message> getAllMessagesForUser(User user) {
+  Stream<List<Message>> getAllMessagesForUser(User user) {
     final me = _userRepository.getUser();
     if (me == null) throw Exception('User not set');
 
@@ -53,13 +53,15 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> sendMessage(User user, Message message) async {
+  Future<void> sendMessage(User user, String message) async {
     final me = _userRepository.getUser();
     if (me == null) throw Exception('User not set');
+    if (message.isEmpty) return;
 
     try {
       emit(ChatLoading());
-      await _chatRepository.sendMessage(me, user, message);
+      final messageType = Message(message: message, senderId: me.id, timestamp: DateTime.now());
+      await _chatRepository.sendMessage(me, user, messageType);
       emit(ChatEmpty());
     } catch (e) {
       emit(ChatError(e.toString()));

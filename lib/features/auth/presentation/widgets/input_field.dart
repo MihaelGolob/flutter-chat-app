@@ -5,9 +5,20 @@ class InputField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final IconData? prefixIcon;
+  final VoidCallback? onPrefixIconTap;
   final IconData? suffixIcon;
+  final VoidCallback? onSuffixIconTap;
   final bool obscureText;
-  const InputField({super.key, required this.controller, required this.hintText, this.prefixIcon, this.suffixIcon, this.obscureText = false});
+  const InputField({
+    super.key,
+    required this.controller,
+    required this.hintText,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.obscureText = false,
+    this.onPrefixIconTap,
+    this.onSuffixIconTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +29,8 @@ class InputField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: GoogleFonts.quicksand(color: Colors.grey[400]),
-        prefixIcon: Icon(prefixIcon, color: Colors.white),
-        suffixIcon: Icon(suffixIcon, color: Colors.white),
+        prefixIcon: IconButton(icon: Icon(prefixIcon, color: Colors.white), onPressed: onPrefixIconTap),
+        suffixIcon: IconButton(icon: Icon(suffixIcon, color: Colors.white), onPressed: onSuffixIconTap),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: Colors.white),

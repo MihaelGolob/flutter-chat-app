@@ -5,5 +5,5 @@ import 'package:chat_app/features/chat/presentation/pages/home_page.dart';
 final chatRoutes = {
   '/': (context) => const LoginOrRegisterPage(),
   '/home': (context) => const HomePage(),
-  '/chat': (context) => const ChatPage(),
+  '/chat': (context) => ChatPage(),
 };
