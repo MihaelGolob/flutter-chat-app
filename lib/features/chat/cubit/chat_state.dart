@@ -7,4 +7,6 @@ sealed class ChatState extends Equatable {
   List<Object> get props => [];
 }
 
-final class ChatInitial extends ChatState {}
+final class ChatEmpty extends ChatState {}
+
+final class ChatLoading extends ChatState {}
