@@ -11,7 +11,6 @@ class ChatRepositoryFirebase extends ChatRepository {
 
   ChatRepositoryFirebase() {
     _db = FirebaseFirestore.instance;
-    print('Firebase firestore is initialized');
   }
 
   @override

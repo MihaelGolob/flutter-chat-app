@@ -1,7 +1,9 @@
+import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:chat_app/features/auth/presentation/widgets/input_field.dart';
 import 'package:chat_app/features/chat/cubit/chat_cubit.dart';
 import 'package:chat_app/features/chat/models/message_model.dart';
+import 'package:chat_app/features/chat/presentation/widgets/chat_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -78,7 +80,9 @@ class ChatPage extends StatelessWidget {
           return ListView.builder(
             itemCount: messages.length,
             itemBuilder: (context, index) {
-              return Text(messages[index].message);
+              final message = messages[index];
+              final isMe = message.senderId == context.read<AuthBloc>().getCurrentUserId();
+              return ChatBubble(message: message.message, time: message.timestamp, isSender: isMe);
             },
           );
         },

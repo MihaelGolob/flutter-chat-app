@@ -56,4 +56,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthError(message: 'Failed to sign out'));
     }
   }
+
+  String getCurrentUserId() {
+    final user = _userRepository.getUser();
+    if (user == null) throw Exception('User not set');
+    return user.id;
+  }
 }
