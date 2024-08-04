@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final userId = await _authRepository.signInWithEmailAndPassword(event.email, event.password);
       final newUser = User(id: userId, username: event.email, email: event.email);
       _userRepository.setUser(newUser);
-      _userRepository.addUserToServer(newUser);
+      _userRepository.saveUser(newUser);
       emit(AuthSuccess(_userRepository.getUser()!));
     } catch (e) {
       emit(AuthError(message: 'Failed to sign in'));

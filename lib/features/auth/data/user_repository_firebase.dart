@@ -4,8 +4,12 @@ import 'user_repository.dart';
 
 class UserRepositoryFirebase extends UserRepository {
   User? _currentUser;
-
+  late final FirebaseFirestore _db;
   final String _kUsersCollection = 'users';
+
+  UserRepositoryFirebase() {
+    _db = FirebaseFirestore.instance;
+  }
 
   @override
   User? getUser() {
@@ -23,11 +27,23 @@ class UserRepositoryFirebase extends UserRepository {
   }
 
   @override
-  void addUserToServer(User user) {
+  void saveUser(User user) {
     try {
-      FirebaseFirestore.instance.collection(_kUsersCollection).doc(user.email).set(user.toMap());
+      _db.collection(_kUsersCollection).doc(user.email).set(user.toMap());
     } catch (e) {
       print('Error when adding new user: $e');
+    }
+  }
+
+  @override
+  Future<List<User>> getAllUsers() async {
+    try {
+      return _db.collection(_kUsersCollection).get().then((QuerySnapshot snapshot) {
+        return snapshot.docs.map((DocumentSnapshot doc) => User.fromMap(doc.data() as Map<String, dynamic>)).toList();
+      });
+    } catch (e) {
+      print('Error when getting all users: $e');
+      return Future.value([]);
     }
   }
 }
