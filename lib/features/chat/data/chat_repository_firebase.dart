@@ -17,13 +17,20 @@ class ChatRepositoryFirebase extends ChatRepository {
 
   @override
   Stream<List<Message>> getAllMessagesForUser(User me, User user) {
-    return _db
-        .collection(_kChatCollection)
-        .doc(_getChatId(me, user))
-        .collection(_kMessagesCollection)
-        .orderBy('timestamp', descending: false)
-        .snapshots()
-        .map((QuerySnapshot snapshot) => snapshot.docs.map((DocumentSnapshot doc) => Message.fromMap(doc.data() as Map<String, dynamic>)).toList());
+    return _db.collection(_kChatCollection).doc(_getChatId(me, user)).collection(_kMessagesCollection).snapshots().map<List<Message>>((event) {
+      List<Message> messages = [];
+      print('DOCS: ${event.docs}');
+
+      for (var doc in event.docs) {
+        try {
+          messages.add(Message.fromMap(doc.data()));
+        } catch (e) {
+          print('Error when getting all messages: $e');
+        }
+      }
+      print('MESSAGES: $messages');
+      return messages;
+    });
   }
 
   @override

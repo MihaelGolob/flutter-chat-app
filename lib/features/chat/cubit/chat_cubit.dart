@@ -30,6 +30,7 @@ class ChatCubit extends Cubit<ChatState> {
     if (me == null) throw Exception('User not set');
 
     try {
+      emit(ChatEmpty());
       return _chatRepository.getAllMessagesForUser(me, user);
     } catch (e) {
       emit(ChatError(e.toString()));

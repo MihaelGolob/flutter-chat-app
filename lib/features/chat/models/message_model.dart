@@ -21,7 +21,7 @@ class Message {
     return {
       'message': message,
       'senderId': senderId,
-      'timeStamp': timestamp,
+      'timestamp': timestamp.toString(),
     };
   }
 
@@ -29,7 +29,7 @@ class Message {
     return Message(
       message: map['message'],
       senderId: map['senderId'],
-      timestamp: map['timeStamp'],
+      timestamp: DateTime.parse(map['timestamp']),
     );
   }
 }

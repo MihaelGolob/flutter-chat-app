@@ -71,6 +71,9 @@ class ChatPage extends StatelessWidget {
           if (state is ChatError) {
             return Center(child: Text(state.message));
           }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
           final messages = snapshot.data as List<Message>;
           return ListView.builder(
             itemCount: messages.length,
