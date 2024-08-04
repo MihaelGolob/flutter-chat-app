@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/features/auth/data/auth_repository.dart';
-import 'package:chat_app/features/auth/data/user_repository_firebase.dart';
+import 'package:chat_app/features/auth/data/user_repository.dart';
 import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -27,13 +27,43 @@ class AuthRepositoryMock extends AuthRepository {
   }
 }
 
+class UserRepositoryMock extends UserRepository {
+  User? _currentUser;
+  final List<User> _users = [];
+
+  @override
+  void clearUser() {
+    _currentUser = null;
+  }
+
+  @override
+  Future<List<User>> getAllUsers() {
+    return Future.value(_users);
+  }
+
+  @override
+  void saveUser(User user) {
+    _users.add(user);
+  }
+
+  @override
+  User? getUser() {
+    return _currentUser;
+  }
+
+  @override
+  void setUser(User user) {
+    _currentUser = user;
+  }
+}
+
 void main() {
   group('Auth tests', () {
     group('Auth bloc tests', () {
       late AuthBloc authBloc;
 
       setUp(() async {
-        authBloc = AuthBloc(AuthRepositoryMock(), UserRepositoryFirebase());
+        authBloc = AuthBloc(AuthRepositoryMock(), UserRepositoryMock());
       });
 
       test('Initial state should be AuthInitial', () {
