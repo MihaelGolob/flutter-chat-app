@@ -7,7 +7,6 @@ class ChatRepositoryFirebase extends ChatRepository {
   late final FirebaseFirestore _db;
 
   final String _kChatCollection = 'chat';
-  final String _kUsersCollection = 'users';
   final String _kMessagesCollection = 'messages';
 
   ChatRepositoryFirebase() {
