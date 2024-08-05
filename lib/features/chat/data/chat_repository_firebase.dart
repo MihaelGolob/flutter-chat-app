@@ -26,7 +26,7 @@ class ChatRepositoryFirebase extends ChatRepository {
           print('Error when getting all messages: $e');
         }
       }
-      messages.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      messages.sort((a, b) => b.timestamp.compareTo(a.timestamp));
       print('MESSAGES: $messages');
       return messages;
     });

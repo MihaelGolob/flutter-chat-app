@@ -78,6 +78,7 @@ class ChatPage extends StatelessWidget {
           }
           final messages = snapshot.data as List<Message>;
           return ListView.builder(
+            reverse: true,
             itemCount: messages.length,
             itemBuilder: (context, index) {
               final message = messages[index];
