@@ -1,6 +1,7 @@
 import 'package:chat_app/features/auth/models/user_model.dart';
 import 'package:chat_app/features/chat/data/chat_repository.dart';
 import 'package:chat_app/features/chat/models/message_model.dart';
+import 'package:chat_app/global/log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatRepositoryFirebase extends ChatRepository {
@@ -17,17 +18,15 @@ class ChatRepositoryFirebase extends ChatRepository {
   Stream<List<Message>> getAllMessagesForUser(User me, User user) {
     return _db.collection(_kChatCollection).doc(_getChatId(me, user)).collection(_kMessagesCollection).snapshots().map<List<Message>>((event) {
       List<Message> messages = [];
-      print('DOCS: ${event.docs}');
 
       for (var doc in event.docs) {
         try {
           messages.add(Message.fromMap(doc.data()));
         } catch (e) {
-          print('Error when getting all messages: $e');
+          Log.w('Error when getting all messages: $e');
         }
       }
       messages.sort((a, b) => b.timestamp.compareTo(a.timestamp));
-      print('MESSAGES: $messages');
       return messages;
     });
   }
@@ -39,7 +38,7 @@ class ChatRepositoryFirebase extends ChatRepository {
         return Message.fromMap(snapshot.docs.first.data() as Map<String, dynamic>);
       });
     } catch (e) {
-      print('Error when getting last message: $e');
+      Log.w('Error when getting last message: $e');
       return Future.value(Message(message: '', senderId: '', timestamp: DateTime.now()));
     }
   }
@@ -52,9 +51,9 @@ class ChatRepositoryFirebase extends ChatRepository {
           .doc(_getChatId(me, user))
           .collection(_kMessagesCollection)
           .add(message.toMap())
-          .then((DocumentReference doc) => print('Message sent ${message.message}'));
+          .then((DocumentReference doc) => Log.i('Message sent ${message.message}'));
     } catch (e) {
-      print('Error when sending message: $e');
+      Log.w('Error when sending message: $e');
     }
   }
 

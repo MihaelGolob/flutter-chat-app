@@ -1,4 +1,5 @@
 import 'package:chat_app/features/auth/models/user_model.dart';
+import 'package:chat_app/global/log.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_repository.dart';
 
@@ -31,7 +32,7 @@ class UserRepositoryFirebase extends UserRepository {
     try {
       _db.collection(_kUsersCollection).doc(user.email).set(user.toMap());
     } catch (e) {
-      print('Error when adding new user: $e');
+      Log.w('Error when adding new user: $e');
     }
   }
 
@@ -42,7 +43,7 @@ class UserRepositoryFirebase extends UserRepository {
         return snapshot.docs.map((DocumentSnapshot doc) => User.fromMap(doc.data() as Map<String, dynamic>)).toList();
       });
     } catch (e) {
-      print('Error when getting all users: $e');
+      Log.w('Error when getting all users: $e');
       return Future.value([]);
     }
   }

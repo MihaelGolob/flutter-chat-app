@@ -1,4 +1,5 @@
 import 'package:chat_app/features/auth/data/auth_repository.dart';
+import 'package:chat_app/global/log.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepositoryFirebase implements AuthRepository {
@@ -7,7 +8,7 @@ class AuthRepositoryFirebase implements AuthRepository {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      print(e);
+      Log.i(e);
       rethrow;
     }
   }
@@ -18,7 +19,7 @@ class AuthRepositoryFirebase implements AuthRepository {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       return FirebaseAuth.instance.currentUser?.uid ?? '';
     } on FirebaseAuthException catch (e) {
-      print(e);
+      Log.i(e);
       rethrow;
     }
   }
@@ -28,7 +29,7 @@ class AuthRepositoryFirebase implements AuthRepository {
     try {
       await FirebaseAuth.instance.signOut();
     } on FirebaseAuthException catch (e) {
-      print(e);
+      Log.i(e);
       rethrow;
     }
   }

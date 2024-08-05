@@ -1,5 +1,5 @@
-import 'package:chat_app/app_bloc_observer.dart';
-import 'package:chat_app/chat_routes.dart';
+import 'package:chat_app/global/app_bloc_observer.dart';
+import 'package:chat_app/global/chat_routes.dart';
 import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/features/auth/data/auth_repository.dart';
 import 'package:chat_app/features/auth/data/auth_repository_firebase.dart';

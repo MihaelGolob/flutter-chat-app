@@ -1,27 +1,28 @@
+import 'package:chat_app/global/log.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
     super.onCreate(bloc);
-    print('onCreate -- bloc: ${bloc.runtimeType}');
+    Log.i('onCreate -- bloc: ${bloc.runtimeType}');
   }
 
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    print('onEvent -- bloc: ${bloc.runtimeType}, event: $event');
+    Log.i('onEvent -- bloc: ${bloc.runtimeType}, event: $event');
   }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    print('onTransition -- bloc: ${bloc.runtimeType}, transition: $transition');
+    Log.i('onTransition -- bloc: ${bloc.runtimeType}, transition: $transition');
   }
 
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    print('onChange -- bloc: ${bloc.runtimeType}, change: $change');
+    Log.i('onChange -- bloc: ${bloc.runtimeType}, change: $change');
   }
 }
