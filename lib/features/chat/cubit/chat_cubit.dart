@@ -16,7 +16,9 @@ class ChatCubit extends Cubit<ChatState> {
   Future<List<User>> getAllUsers() async {
     try {
       emit(ChatLoading());
+      final me = _userRepository.getUser();
       var users = await _userRepository.getAllUsers();
+      users.removeWhere((user) => user.id == me?.id);
       emit(ChatEmpty());
       return users;
     } catch (e) {
