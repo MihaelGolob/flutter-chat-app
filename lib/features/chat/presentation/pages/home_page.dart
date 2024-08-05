@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Text(
+              key: const ValueKey('home_title'),
               'Write to your colleagues',
               style: GoogleFonts.quicksand(
                 color: Colors.white,

@@ -66,12 +66,14 @@ class LoginPage extends StatelessWidget {
               Text('Welcome back to the chat app', style: GoogleFonts.quicksand(fontSize: 16, color: Colors.grey[400])),
               const SizedBox(height: 20),
               InputField(
+                key: const ValueKey('login_email'),
                 controller: _emailController,
                 hintText: 'Email',
                 prefixIcon: Icons.email,
               ),
               const SizedBox(height: 20),
               InputField(
+                key: const ValueKey('login_password'),
                 controller: _passwordController,
                 hintText: 'Password',
                 prefixIcon: Icons.lock,
@@ -87,6 +89,7 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 25),
               ConfirmButton(
+                key: const ValueKey('login_login_button'),
                 text: 'LOGIN',
                 onTap: () => context.read<AuthBloc>().add(AuthLogin(email: _emailController.text, password: _passwordController.text)),
               ),
