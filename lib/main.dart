@@ -18,19 +18,31 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
 
-  runApp(const MyApp());
+  // Repositories
+  final AuthRepository authRepository = AuthRepositoryFirebase();
+  final ChatRepository chatRepository = ChatRepositoryFirebase();
+  final UserRepository userRepository = UserRepositoryFirebase();
+
+  runApp(MyApp(
+    authRepository: authRepository,
+    chatRepository: chatRepository,
+    userRepository: userRepository,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AuthRepository authRepository;
+  final ChatRepository chatRepository;
+  final UserRepository userRepository;
+  const MyApp({super.key, required this.authRepository, required this.chatRepository, required this.userRepository});
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AuthRepository>(create: (context) => AuthRepositoryFirebase()),
-        RepositoryProvider<ChatRepository>(create: (context) => ChatRepositoryFirebase()),
-        RepositoryProvider<UserRepository>(create: (context) => UserRepositoryFirebase()),
+        RepositoryProvider<AuthRepository>(create: (context) => authRepository),
+        RepositoryProvider<ChatRepository>(create: (context) => chatRepository),
+        RepositoryProvider<UserRepository>(create: (context) => userRepository),
       ],
       child: MultiBlocProvider(
         providers: [
