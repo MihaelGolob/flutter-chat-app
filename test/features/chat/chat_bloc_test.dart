@@ -42,6 +42,11 @@ void main() {
     setUp(() {
       var userRepository = UserRepositoryMock();
       chatCubit = ChatCubit(ChatRepositoryMock(), userRepository);
+
+      // add users to repository
+      userRepository.saveUser(me);
+      userRepository.saveUser(receiver);
+
       userRepository.setUser(me);
     });
 
@@ -52,6 +57,12 @@ void main() {
       expect: () => <ChatState>[],
     );
 
-    
+    blocTest('Get all users does not return me',
+        build: () => chatCubit,
+        act: (cubit) async {
+          final users = await cubit.getAllUsers();
+          final includesMe = users.any((user) => user.id == me.id);
+          expect(includesMe, false);
+        });
   });
 }
