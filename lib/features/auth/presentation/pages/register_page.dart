@@ -106,7 +106,7 @@ class RegisterPage extends StatelessWidget {
                 onTap: switchToLogin,
                 child: Text('Already have an account? Login here', style: GoogleFonts.quicksand(fontSize: 15, color: Colors.grey[400])),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 60),
             ],
           ),
         ),

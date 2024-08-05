@@ -2,6 +2,7 @@ import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/features/auth/presentation/widgets/company_button.dart';
 import 'package:chat_app/features/auth/presentation/widgets/input_field.dart';
 import 'package:chat_app/global/widgets/confirm_button.dart';
+import 'package:chat_app/global/widgets/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +32,10 @@ class LoginPage extends StatelessWidget {
             listener: (context, state) {
               if (state is AuthSuccess) {
                 Navigator.of(context).pushReplacementNamed('/home');
+              } else if (state is AuthError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  chatSnackBar(const ValueKey('login_error_message'), 'Invalid email or password'),
+                );
               }
             },
             builder: (blocContext, state) {
@@ -131,7 +136,7 @@ class LoginPage extends StatelessWidget {
                 onTap: switchToRegister,
                 child: Text('Don\'t have an account? Sign Up', style: GoogleFonts.quicksand(fontSize: 15, color: Colors.grey[400])),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 60),
             ],
           ),
         ),

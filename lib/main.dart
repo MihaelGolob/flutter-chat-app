@@ -10,6 +10,7 @@ import 'package:chat_app/features/chat/data/chat_repository.dart';
 import 'package:chat_app/features/chat/data/chat_repository_firebase.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
@@ -28,6 +29,15 @@ void main() async {
     chatRepository: chatRepository,
     userRepository: userRepository,
   ));
+}
+
+void makeGestureBarBackgroundTransparent() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+  ));
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.top]);
 }
 
 class MyApp extends StatelessWidget {
