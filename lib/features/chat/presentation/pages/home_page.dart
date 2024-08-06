@@ -17,11 +17,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future<List<User>> _allUsersFuture;
+  final TextEditingController _searchController = TextEditingController();
+  late List<User> _fetchedUsers;
+  List<User>? _filteredUsers;
 
   @override
   void initState() {
     super.initState();
     _allUsersFuture = context.read<ChatCubit>().getAllUsers();
+
+    _searchController.addListener(() {
+      final query = _searchController.text.toLowerCase();
+      setState(() {
+        _filteredUsers = _fetchedUsers.where((contact) => contact.email.toLowerCase().contains(query)).toList();
+      });
+    });
   }
 
   @override
@@ -92,10 +102,9 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 80,
               child: InputField(
-                controller: TextEditingController(),
+                controller: _searchController,
                 hintText: 'Search',
                 prefixIcon: Icons.search_outlined,
-                suffixIcon: Icons.arrow_right_alt_rounded,
               ),
             ),
             const SizedBox(height: 25),
@@ -119,13 +128,14 @@ class _HomePageState extends State<HomePage> {
                 return Center(child: Text(state.message, textAlign: TextAlign.center));
               }
 
-              final contacts = snapshot.data as List<User>;
+              _fetchedUsers = snapshot.data as List<User>;
+              _filteredUsers ??= _fetchedUsers;
               return ListView.builder(
-                itemCount: contacts.length,
+                itemCount: _filteredUsers!.length,
                 itemBuilder: (context, index) => ContactPreview(
-                  user: contacts[index],
+                  user: _filteredUsers![index],
                   goToChat: () {
-                    final data = ChatPageData(receiver: contacts[index]);
+                    final data = ChatPageData(receiver: _filteredUsers![index]);
                     Navigator.pushNamed(context, '/chat', arguments: data);
                   },
                 ),
