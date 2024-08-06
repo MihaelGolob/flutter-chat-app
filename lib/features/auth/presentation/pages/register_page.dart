@@ -1,5 +1,6 @@
 import 'package:chat_app/features/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/features/auth/presentation/widgets/input_field.dart';
+import 'package:chat_app/features/auth/presentation/widgets/password_field.dart';
 import 'package:chat_app/global/widgets/confirm_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,20 +74,14 @@ class RegisterPage extends StatelessWidget {
                 prefixIcon: Icons.email,
               ),
               const SizedBox(height: 20),
-              InputField(
+              PasswordField(
                 controller: _passwordController,
                 hintText: 'Password',
-                prefixIcon: Icons.lock,
-                suffixIcon: Icons.remove_red_eye_outlined,
-                obscureText: true,
               ),
               const SizedBox(height: 20),
-              InputField(
+              PasswordField(
                 controller: _confirmPasswordController,
                 hintText: 'Confirm Password',
-                prefixIcon: Icons.lock,
-                suffixIcon: Icons.remove_red_eye_outlined,
-                obscureText: true,
               ),
               const SizedBox(height: 5),
               const SizedBox(height: 25),
