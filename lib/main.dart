@@ -19,6 +19,8 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
 
+  makeGestureBarBackgroundTransparent();
+
   // Repositories
   final AuthRepository authRepository = AuthRepositoryFirebase();
   final ChatRepository chatRepository = ChatRepositoryFirebase();
