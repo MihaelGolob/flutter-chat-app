@@ -31,7 +31,6 @@ jobs:
         with:
           api-level: 33 
           arch: x86_64
-          profile: Android 13
           script: flutter test integration_test --verbose
 
   # build_iOSApp:
