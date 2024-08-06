@@ -25,7 +25,14 @@ jobs:
       - run: flutter --version
       - run: flutter analyze
       - run: flutter test
-      - run: flutter test integration_test/
+      - name: Run integration tests
+        # more info on https://github.com/ReactiveCircus/android-emulator-runner
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33 
+          arch: x86_64
+          profile: Android 13
+          script: flutter test integration_test --verbose
 
   # build_iOSApp:
   #   name: Build Flutter App (iOS)
