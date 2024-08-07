@@ -35,7 +35,10 @@ class ChatRepositoryFirebase extends ChatRepository {
   Future<Message> getLastMessageForUser(User me, User user) {
     try {
       return _db.collection(_kChatCollection).doc(_getChatId(me, user)).collection(_kMessagesCollection).get().then((QuerySnapshot snapshot) {
-        return Message.fromMap(snapshot.docs.first.data() as Map<String, dynamic>);
+        // order messages
+        final messages = snapshot.docs.map((e) => Message.fromMap(e.data() as Map<String, dynamic>)).toList();
+        messages.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+        return messages.isNotEmpty ? messages.first : Message.empty();
       });
     } catch (e) {
       Log.w('Error when getting last message: $e');
